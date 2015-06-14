@@ -1,0 +1,41 @@
+{
+  "name": "fosify-js",
+  "version": "0.0.1",
+  "description": "A JavaScript bundling plugin for Fosify.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zkochan/fosify-js.git"
+  },
+  "keywords": [
+    "fosify"
+  ],
+  "author": "Zoltan Kochan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zkochan/fosify-js/issues"
+  },
+  "homepage": "https://github.com/zkochan/fosify-js",
+  "dependencies": {
+    "babelify": "^6.1.2",
+    "browserify": "^10.2.4",
+    "fosify-util": "0.0.2",
+    "glob": "^5.0.10",
+    "gulp-header": "^1.2.2",
+    "gulp-if": "^1.2.5",
+    "gulp-uglify": "^1.2.0",
+    "jade": "^1.11.0",
+    "jadeify": "^4.3.0",
+    "lodash": "^3.9.3",
+    "node-lessify": "0.0.10",
+    "redirectify": "^1.4.0",
+    "stringify": "^3.1.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-fs": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.2.2"
+  }
+}
