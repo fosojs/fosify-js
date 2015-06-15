@@ -77,7 +77,7 @@ function bundleScripts(opts, cb) {
       var browserifyOpts = _.extend(opts.watch ? watchify.args : {}, {
         entries: [file],
         extensions: ['.js', '.json'].concat(es6Extensions),
-        paths: [path.join(__dirname, '../node_modules')],
+        paths: [path.join(__dirname, './node_modules')],
         insertGlobalVars: {
           __host: _.constant('"' + opts.host + '"'),
           __secureHost: _.constant('"' + (opts.secureHost || opts.host) + '"')
