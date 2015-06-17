@@ -17,6 +17,7 @@ var gulpif = require('gulp-if');
 var redirectify = require('redirectify');
 var header = require('gulp-header');
 var futil = require('fosify-util');
+var collapse = require('bundle-collapser/plugin');
 
 var es6Extensions = ['.babel', '.es6'];
 
@@ -78,6 +79,7 @@ function bundleScripts(opts, cb) {
         entries: [file],
         extensions: ['.js', '.json'].concat(es6Extensions),
         paths: [path.join(__dirname, './node_modules')],
+        fullPaths: !opts.minify,
         insertGlobalVars: {
           __host: _.constant('"' + opts.host + '"'),
           __secureHost: _.constant('"' + (opts.secureHost || opts.host) + '"')
@@ -104,6 +106,10 @@ function bundleScripts(opts, cb) {
           }
         }))
         .transform(redirectify, redirOpts);
+
+      if (opts.minify) {
+        bundler.plugin(collapse);
+      }
 
       function rebundle() {
         bundle(bundleName, bundler, {

@@ -13,7 +13,11 @@
   "keywords": [
     "fosify"
   ],
-  "author": "Zoltan Kochan",
+  "author": {
+    "name": "Zoltan Kochan",
+    "email": "zoltan.kochan@gmail.com",
+    "url": "http://kochan.io"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zkochan/fosify-js/issues"
@@ -22,6 +26,7 @@
   "dependencies": {
     "babelify": "^6.1.2",
     "browserify": "^10.2.4",
+    "bundle-collapser": "^1.2.0",
     "fosify-util": "0.0.3",
     "glob": "^5.0.10",
     "gulp-header": "^1.2.2",
