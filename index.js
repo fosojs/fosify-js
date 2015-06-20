@@ -79,11 +79,12 @@ function bundleScripts(opts, cb) {
         entries: [file],
         extensions: ['.js', '.json'].concat(es6Extensions),
         paths: [path.join(__dirname, './node_modules')],
-        fullPaths: !opts.minify,
+        fullPaths: false,
         insertGlobalVars: {
           __host: _.constant('"' + opts.host + '"'),
           __secureHost: _.constant('"' + (opts.secureHost || opts.host) + '"')
-        }
+        },
+        debug: !opts.minify
       });
 
       var redirOpts = {};
