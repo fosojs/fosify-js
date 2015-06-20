@@ -30,7 +30,7 @@ function insertLivereload(livereload) {
     'fjs.parentNode.insertBefore(js, fjs);' +
     '})(document, \'script\', \'livereload\');';
   return header(code, {
-    port: '2769'
+    port: livereload.port || '2769'
   });
 }
 
