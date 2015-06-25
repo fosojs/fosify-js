@@ -16,12 +16,15 @@ var path = require('path');
 var gulpif = require('gulp-if');
 var redirectify = require('redirectify');
 var header = require('gulp-header');
-var futil = require('fosify-util');
+var futil = require('fosify');
 var collapse = require('bundle-collapser/plugin');
+var pkg = require('./package.json');
 
 var es6Extensions = ['.babel', '.es6'];
 
 function insertLivereload(livereload) {
+  livereload = livereload || {};
+
   var code = '(function(d, s, id) {' +
     'var js, fjs = d.getElementsByTagName(s)[0];' +
     'if (d.getElementById(id)) return;' +
@@ -35,6 +38,8 @@ function insertLivereload(livereload) {
 }
 
 function bundle(bundleName, bundler, opts) {
+  futil.notifyUpdate(pkg);
+
   opts = opts || {};
 
   if (!opts.dest) {

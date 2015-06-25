@@ -9,6 +9,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "fosify": "*"
+    "foso": "*"
   }
 }
