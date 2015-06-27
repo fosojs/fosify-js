@@ -38,8 +38,6 @@ function insertLivereload(livereload) {
 }
 
 function bundle(bundleName, bundler, opts) {
-  futil.notifyUpdate(pkg);
-
   opts = opts || {};
 
   if (!opts.dest) {
@@ -60,6 +58,8 @@ function bundle(bundleName, bundler, opts) {
 }
 
 function bundleScripts(opts, cb) {
+  futil.notifyUpdate(pkg);
+
   opts = opts || {};
 
   var rootIndexRegex = new RegExp(opts.src + '/fosofile\.(js|es6|babel)');

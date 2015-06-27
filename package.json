@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/**/*.js",
-    "postinstall": "register",
-    "preuninstall": "unregister"
+    "postinstall": "node ./node_modules/fosify/bin/register",
+    "preuninstall": "node ./node_modules/fosify/bin/unregister"
   },
   "repository": {
     "type": "git",
@@ -48,5 +48,8 @@
   "devDependencies": {
     "chai": "^3.0.0",
     "mocha": "^2.2.5"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
   }
 }
