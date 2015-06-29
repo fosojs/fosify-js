@@ -1,6 +1,6 @@
 {
   "name": "fosify-js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A JavaScript bundling plugin for foso.",
   "main": "index.js",
   "scripts": {

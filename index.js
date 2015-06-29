@@ -62,7 +62,7 @@ function bundleScripts(opts, cb) {
 
   opts = opts || {};
 
-  var rootIndexRegex = new RegExp(opts.src + '/fosofile\.(js|es6|babel)');
+  var rootIndexRegex = new RegExp(opts.src + '/_bundle\.(js|es6|babel)');
   var createPath = futil.bundleNamer({
     src: opts.src,
     extension: 'js'
@@ -75,7 +75,7 @@ function bundleScripts(opts, cb) {
   }
 
   var pattern = opts.src +
-    '{/*/**/bundle,/**/*.bundle,/fosofile}.{js,es6,babel}';
+    '{/*/**/bundle,/**/*.bundle,/_bundle}.{js,es6,babel}';
   glob(pattern, { ignore: opts.ignore }, function(err, files) {
     files.forEach(function(file) {
       var bundleName = getBundleName(file);
