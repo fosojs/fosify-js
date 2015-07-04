@@ -1,6 +1,6 @@
 {
   "name": "fosify-js",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A JavaScript bundling plugin for foso.",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,7 @@
     "babelify": "^6.1.2",
     "browserify": "^10.2.4",
     "bundle-collapser": "^1.2.0",
-    "fosify": "^0.4.4",
+    "fosify": "^0.4.9",
     "glob": "^5.0.10",
     "gulp-header": "^1.2.2",
     "gulp-if": "^1.2.5",
