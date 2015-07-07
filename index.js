@@ -19,6 +19,7 @@ var header = require('gulp-header');
 var futil = require('fosify');
 var collapse = require('bundle-collapser/plugin');
 var pkg = require('./package.json');
+var fs = require('fs');
 
 var es6Extensions = ['.babel', '.es6'];
 
@@ -57,6 +58,21 @@ function bundle(bundleName, bundler, opts) {
     .pipe(vfs.dest(opts.dest));
 }
 
+function stringConstant(text) {
+  return _.constant('"' + text + '"');
+}
+
+function getBundleVersion() {
+  var cwd = path.resolve(process.cwd());
+  var pkgPath = path.join(cwd, 'package.json');
+  var defaultVersion = 'undefined';
+  if (!fs.existsSync(pkgPath)) {
+    return defaultVersion;
+  }
+  var bundlePkg = require(pkgPath);
+  return bundlePkg.version || defaultVersion;
+}
+
 function bundleScripts(opts, cb) {
   futil.notifyUpdate(pkg);
 
@@ -86,8 +102,9 @@ function bundleScripts(opts, cb) {
         paths: [path.join(__dirname, './node_modules')],
         fullPaths: false,
         insertGlobalVars: {
-          __host: _.constant('"' + opts.host + '"'),
-          __secureHost: _.constant('"' + (opts.secureHost || opts.host) + '"')
+          __host: stringConstant(opts.host),
+          __secureHost: stringConstant(opts.secureHost || opts.host),
+          __version: stringConstant(getBundleVersion())
         },
         debug: !opts.minify
       });
