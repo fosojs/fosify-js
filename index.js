@@ -104,6 +104,7 @@ function bundleScripts(opts, cb) {
         insertGlobalVars: {
           __host: stringConstant(opts.host),
           __secureHost: stringConstant(opts.secureHost || opts.host),
+          __baseURL: stringConstant(opts.baseURL || ''),
           __version: stringConstant(getBundleVersion())
         },
         debug: !opts.minify

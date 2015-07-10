@@ -9,6 +9,7 @@ foso
     dest: './build',
     host: 'example.com',
     secureHost: 'secure.example.com',
+    baseURL: '/en-us',
     watch: true,
     minify: true
   })
