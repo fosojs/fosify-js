@@ -59,7 +59,15 @@ function bundle(bundleName, bundler, opts) {
 }
 
 function stringConstant(text) {
-  return _.constant('"' + text + '"');
+  var result;
+  if (typeof text === 'string') {
+    result = '"' + text + '"';
+  } else if (_.isUndefined(text)) {
+    result = 'undefined';
+  } else {
+    result = 'null';
+  }
+  return _.constant(result);
 }
 
 function getBundleVersion() {
