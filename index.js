@@ -19,7 +19,7 @@ var header = require('gulp-header');
 var futil = require('fosify');
 var collapse = require('bundle-collapser/plugin');
 var pkg = require('./package.json');
-var fs = require('fs');
+var insertGlobalVars = require('./lib/insert-global-vars');
 
 var es6Extensions = ['.babel', '.es6'];
 
@@ -58,29 +58,6 @@ function bundle(bundleName, bundler, opts) {
     .pipe(vfs.dest(opts.dest));
 }
 
-function stringConstant(text) {
-  var result;
-  if (typeof text === 'string') {
-    result = '"' + text + '"';
-  } else if (_.isUndefined(text)) {
-    result = 'undefined';
-  } else {
-    result = 'null';
-  }
-  return _.constant(result);
-}
-
-function getBundleVersion() {
-  var cwd = path.resolve(process.cwd());
-  var pkgPath = path.join(cwd, 'package.json');
-  var defaultVersion = 'undefined';
-  if (!fs.existsSync(pkgPath)) {
-    return defaultVersion;
-  }
-  var bundlePkg = require(pkgPath);
-  return bundlePkg.version || defaultVersion;
-}
-
 function bundleScripts(opts, cb) {
   futil.notifyUpdate(pkg);
 
@@ -109,12 +86,7 @@ function bundleScripts(opts, cb) {
         extensions: ['.js', '.json'].concat(es6Extensions),
         paths: [path.join(__dirname, './node_modules')],
         fullPaths: false,
-        insertGlobalVars: {
-          __host: stringConstant(opts.host),
-          __secureHost: stringConstant(opts.secureHost || opts.host),
-          __baseURL: stringConstant(opts.baseURL || ''),
-          __version: stringConstant(getBundleVersion())
-        },
+        insertGlobalVars: insertGlobalVars.create(opts),
         debug: !opts.minify
       });
 
