@@ -3,7 +3,7 @@
 A JavaScript bundling plugin for foso.
 
 [![Dependency Status](https://david-dm.org/fosojs/fosify-js/status.svg?style=flat)](https://david-dm.org/fosojs/fosify-js)
-[![Build Status](http://img.shields.io/travis/fosojs/fosify-js.svg?style=flat)](https://travis-ci.org/fosojs/fosify-js)
+[![Build Status](https://travis-ci.org/fosojs/fosify-js.svg?branch=master)](https://travis-ci.org/fosojs/fosify-js)
 [![npm version](https://badge.fury.io/js/fosify-js.svg)](http://badge.fury.io/js/fosify-js)
 
 
