@@ -11,7 +11,8 @@ foso
     secureHost: 'secure.example.com',
     baseURL: '/en-us',
     watch: true,
-    minify: false
+    minify: false,
+    esnext: true
   })
   .fosify(js)
   .now(function() {

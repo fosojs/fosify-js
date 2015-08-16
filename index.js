@@ -22,6 +22,8 @@ var pkg = require('./package.json');
 var insertGlobalVars = require('./lib/insert-global-vars');
 
 var es6Extensions = ['.babel', '.es6'];
+var standardExtensions = ['.js', '.json'];
+var allExtensions = standardExtensions.concat(es6Extensions);
 
 function insertLivereload(livereload) {
   livereload = livereload || {};
@@ -83,7 +85,7 @@ function bundleScripts(opts, cb) {
 
       var browserifyOpts = _.extend(opts.watch ? watchify.args : {}, {
         entries: [file],
-        extensions: ['.js', '.json'].concat(es6Extensions),
+        extensions: allExtensions,
         paths: [path.join(__dirname, './node_modules')],
         fullPaths: false,
         insertGlobalVars: insertGlobalVars.create(opts),
@@ -100,7 +102,7 @@ function bundleScripts(opts, cb) {
         .transform(lessify)
         .transform(jadeify, { pretty: false })
         .transform(babelify.configure({
-          extensions: es6Extensions
+          extensions: opts.esnext ? allExtensions : es6Extensions
         }))
         .transform(stringify({
           extensions: ['.html', '.txt'],

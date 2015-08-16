@@ -1,4 +1,4 @@
-require('./another-package');
+import {} from './another-package';
 
 console.log(__host);
 console.log(__secureHost);
