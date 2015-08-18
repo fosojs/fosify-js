@@ -60,6 +60,32 @@ function bundle(bundleName, bundler, opts) {
     .pipe(vfs.dest(opts.dest));
 }
 
+/**
+ * Bundles JavaScript resources.
+ * @param {String} opts.src - The path to the resources to bundle.
+ * @param {String[]} [opts.ignore] - An array of patterns to exclude from
+ *   bundling.
+ * @param {Boolean} [opts.watch=false] - Indicates whether the resources should
+ *   be watched for changes.
+ * @param {Boolean} [opts.minify=false] - Indicates whether the resources should
+ *   be minified during bundling.
+ * @param {String} [opts.env] - The environment to which the scripts are
+ *   bundled.
+ * @param {String} [opts.esnext=false] - Indicates whether all scripts are
+ *   written using the latest version of EcmaScript.
+ * @param {String} [opts.dest=./dist] - The destination path for the bundled
+ *   resources.
+ * @param {(Object|Boolean)} [opts.livereload] - Indicates whether to set up a
+ *   livereload server.
+ * @param {String} opts.host - The host on which the resources are hosted. E.g.
+ *   cdn.example.com or localhost:3000
+ * @param {String} [opts.secureHost] - The secure host on which the resources
+ *   are hosted. Only needs to be specified if the secure host is not the same
+ *   as the non-secure one. E.g. secure.example.com.
+ * @param {String} [opts.baseURL] - The base URL of the resources starting with
+ *   a leading slash. Has to be specified if the resources are hosted in a
+ *   subdirectory. E.g. /en-us
+ */
 function bundleScripts(opts, cb) {
   futil.notifyUpdate(pkg);
 
