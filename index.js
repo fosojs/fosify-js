@@ -40,6 +40,12 @@ function insertLivereload(livereload) {
   });
 }
 
+function appendDateStamp() {
+  return header('/* Was bundled at ${date} */\n', {
+    date: new Date()
+  });
+}
+
 function bundle(bundleName, bundler, opts) {
   opts = opts || {};
 
@@ -57,6 +63,7 @@ function bundle(bundleName, bundler, opts) {
     .pipe(buffer())
     .pipe(gulpif(opts.minify, uglify()))
     .pipe(gulpif(opts.livereload, insertLivereload(opts.livereload)))
+    .pipe(appendDateStamp())
     .pipe(vfs.dest(opts.dest));
 }
 
