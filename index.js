@@ -25,19 +25,22 @@ var es6Extensions = ['.babel', '.es6'];
 var standardExtensions = ['.js', '.json'];
 var allExtensions = standardExtensions.concat(es6Extensions);
 
-function insertLivereload(livereload) {
-  livereload = livereload || {};
+function getHeaderCode(livereload) {
+  var code = '/* Was bundled at ' + new Date() + ' */\n';
 
-  var code = '(function(d, s, id) {' +
+  if (!livereload) {
+    return code;
+  }
+
+  var port = livereload.port || '2769';
+
+  return code + '(function(d, s, id) {' +
     'var js, fjs = d.getElementsByTagName(s)[0];' +
     'if (d.getElementById(id)) return;' +
     'js = d.createElement(s); js.id = id;' +
-    'js.src = "https://localhost:${port}/livereload.js";' +
+    'js.src = "https://localhost:' + port + '/livereload.js";' +
     'fjs.parentNode.insertBefore(js, fjs);' +
     '})(document, \'script\', \'livereload\');';
-  return header(code, {
-    port: livereload.port || '2769'
-  });
 }
 
 function appendDateStamp() {
@@ -62,8 +65,7 @@ function bundle(bundleName, bundler, opts) {
     .pipe(source(bundleName))
     .pipe(buffer())
     .pipe(gulpif(opts.minify, uglify()))
-    .pipe(gulpif(opts.livereload, insertLivereload(opts.livereload)))
-    .pipe(appendDateStamp())
+    .pipe(header(getHeaderCode(opts.livereload)))
     .pipe(vfs.dest(opts.dest));
 }
 
