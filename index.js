@@ -78,6 +78,8 @@ function bundle(bundleName, bundler, opts) {
  *   be watched for changes.
  * @param {Boolean} [opts.minify=false] - Indicates whether the resources should
  *   be minified during bundling.
+ * @param {Boolean} [opts.debug=!opts.minify] - When is true, add a source map
+ *   inline to the end of the bundle.
  * @param {String} [opts.env] - The environment to which the scripts are
  *   bundled.
  * @param {String} [opts.esnext=false] - Indicates whether all scripts are
@@ -124,7 +126,7 @@ function bundleScripts(opts, cb) {
         paths: [path.join(__dirname, './node_modules')],
         fullPaths: false,
         insertGlobalVars: insertGlobalVars.create(opts),
-        debug: !opts.minify
+        debug: _.isUndefined(opts.debug) ? !opts.minify : opts.debug
       });
 
       var redirOpts = {};
