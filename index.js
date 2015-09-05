@@ -26,7 +26,7 @@ var standardExtensions = ['.js', '.json'];
 var allExtensions = standardExtensions.concat(es6Extensions);
 
 function getHeaderCode(livereload) {
-  var code = '/* Was bundled at ' + new Date() + ' */\n';
+  var code = '/*! Was bundled at ' + new Date() + ' */\n';
 
   if (!livereload) {
     return code;
