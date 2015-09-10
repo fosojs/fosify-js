@@ -43,12 +43,6 @@ function getHeaderCode(livereload) {
     '})(document, \'script\', \'livereload\');';
 }
 
-function appendDateStamp() {
-  return header('/* Was bundled at ${date} */\n', {
-    date: new Date()
-  });
-}
-
 function bundle(bundleName, bundler, opts) {
   opts = opts || {};
 
