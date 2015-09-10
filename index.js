@@ -12,6 +12,7 @@ var lessify = require('node-lessify');
 var stringify = require('stringify');
 var jadeify = require('jadeify');
 var babelify = require('babelify');
+var reactify = require('reactify');
 var path = require('path');
 var gulpif = require('gulp-if');
 var redirectify = require('redirectify');
@@ -22,7 +23,7 @@ var pkg = require('./package.json');
 var insertGlobalVars = require('./lib/insert-global-vars');
 
 var es6Extensions = ['.babel', '.es6'];
-var standardExtensions = ['.js', '.json'];
+var standardExtensions = ['.jsx', '.js', '.json'];
 var allExtensions = standardExtensions.concat(es6Extensions);
 
 function getHeaderCode(livereload) {
@@ -109,7 +110,7 @@ function bundleScripts(opts, cb) {
   }
 
   var pattern = opts.src +
-    '{/*/**/bundle,/**/*.bundle,/_bundle}.{js,es6,babel}';
+    '{/*/**/bundle,/**/*.bundle,/_bundle}.{js,jsx,es6,babel}';
   glob(pattern, { ignore: opts.ignore }, function(err, files) {
     files.forEach(function(file) {
       var bundleName = getBundleName(file);
@@ -142,7 +143,8 @@ function bundleScripts(opts, cb) {
             extensions: ['.html']
           }
         }))
-        .transform(redirectify, redirOpts);
+        .transform(redirectify, redirOpts)
+        .transform(reactify);
 
       if (opts.minify) {
         bundler.plugin(collapse);
