@@ -16,5 +16,6 @@ describe('insertGlobalVars', function() {
     expect(globalVars.__secureHost()).to.eq('"secure.example.com"');
     expect(globalVars.__baseURL()).to.eq('"/base/url"');
     expect(globalVars.__version()).to.eq('"' + packageVersion + '"');
+    expect(globalVars.__generatedAt()).to.match(/^new Date\([0-9]{13}\)$/);
   });
 });
