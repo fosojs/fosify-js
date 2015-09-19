@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/**/*.js",
-    "postinstall": "node ./node_modules/fosify/bin/register",
-    "preuninstall": "node ./node_modules/fosify/bin/unregister"
+    "postinstall": "node ./bin/register",
+    "preuninstall": "node ./bin/unregister"
   },
   "repository": {
     "type": "git",
