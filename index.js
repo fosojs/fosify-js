@@ -101,7 +101,7 @@ function readPkg(src) {
  *   a leading slash. Has to be specified if the resources are hosted in a
  *   subdirectory. E.g. /en-us
  */
-function bundleScripts(opts, cb) {
+module.exports = function(plugin, opts, next) {
   futil.notifyUpdate(pkg);
 
   opts = opts || {};
@@ -125,61 +125,71 @@ function bundleScripts(opts, cb) {
   if (localPkg && localPkg.main) {
     pattern = '{' + localPkg.main + ',' + pattern + '}';
   }
-  glob(pattern, { ignore: opts.ignore }, function(err, files) {
-    files.forEach(function(file) {
-      var bundleName = getBundleName(file);
 
-      var browserifyOpts = _.extend(opts.watch ? watchify.args : {}, {
-        entries: [file],
-        extensions: allExtensions,
-        paths: [path.join(__dirname, './node_modules')],
-        fullPaths: false,
-        insertGlobalVars: insertGlobalVars.create(opts),
-        debug: _.isUndefined(opts.debug) ? !opts.minify : opts.debug
+  plugin.expose('bundle', function(cb) {
+    cb = cb || function() {};
+    glob(pattern, { ignore: opts.ignore }, function(err, files) {
+      files.forEach(function(file) {
+        var bundleName = getBundleName(file);
+
+        var browserifyOpts = _.extend(opts.watch ? watchify.args : {}, {
+          entries: [file],
+          extensions: allExtensions,
+          paths: [path.join(__dirname, './node_modules')],
+          fullPaths: false,
+          insertGlobalVars: insertGlobalVars.create(opts),
+          debug: _.isUndefined(opts.debug) ? !opts.minify : opts.debug
+        });
+
+        var redirOpts = {};
+        if (opts.env) {
+          redirOpts.suffix = '.' + opts.env;
+        }
+
+        var ify = _.flow(browserify, opts.watch ? watchify : _.identity);
+        var bundler = ify(browserifyOpts)
+          .transform(lessify)
+          .transform(jadeify, { pretty: false })
+          .transform(babelify.configure({
+            extensions: opts.esnext ? allExtensions : es6Extensions
+          }))
+          .transform(stringify({
+            extensions: ['.html', '.txt'],
+            minify: true,
+            minifier: {
+              extensions: ['.html']
+            }
+          }))
+          .transform(redirectify, redirOpts)
+          .transform(reactify);
+
+        if (opts.minify) {
+          bundler.plugin(collapse);
+        }
+
+        function rebundle() {
+          bundle(bundleName, bundler, {
+            minify: opts.minify,
+            dest: opts.dest,
+            livereload: opts.livereload
+          });
+          futil.log.bundled(bundleName);
+        }
+
+        bundler.on('update', rebundle);
+
+        rebundle();
       });
 
-      var redirOpts = {};
-      if (opts.env) {
-        redirOpts.suffix = '.' + opts.env;
-      }
-
-      var ify = _.flow(browserify, opts.watch ? watchify : _.identity);
-      var bundler = ify(browserifyOpts)
-        .transform(lessify)
-        .transform(jadeify, { pretty: false })
-        .transform(babelify.configure({
-          extensions: opts.esnext ? allExtensions : es6Extensions
-        }))
-        .transform(stringify({
-          extensions: ['.html', '.txt'],
-          minify: true,
-          minifier: {
-            extensions: ['.html']
-          }
-        }))
-        .transform(redirectify, redirOpts)
-        .transform(reactify);
-
-      if (opts.minify) {
-        bundler.plugin(collapse);
-      }
-
-      function rebundle() {
-        bundle(bundleName, bundler, {
-          minify: opts.minify,
-          dest: opts.dest,
-          livereload: opts.livereload
-        });
-        futil.log.bundled(bundleName);
-      }
-
-      bundler.on('update', rebundle);
-
-      rebundle();
+      cb();
     });
-    cb();
   });
-}
 
-module.exports = bundleScripts;
-module.exports.extensions = ['js'];
+  plugin.root.extensions.push('js');
+
+  next();
+};
+
+module.exports.attributes = {
+  pkg: require('./package.json')
+};
