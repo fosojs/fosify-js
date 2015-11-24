@@ -21,6 +21,7 @@ var futil = require('fosify');
 var collapse = require('bundle-collapser/plugin');
 var pkg = require('./package.json');
 var insertGlobalVars = require('./lib/insert-global-vars');
+var cwd = path.resolve(process.cwd());
 
 var es6Extensions = ['.babel', '.es6'];
 var standardExtensions = ['.jsx', '.js', '.json'];
@@ -62,6 +63,14 @@ function bundle(bundleName, bundler, opts) {
     .pipe(gulpif(opts.minify, uglify()))
     .pipe(header(getHeaderCode(opts.livereload)))
     .pipe(vfs.dest(opts.dest));
+}
+
+function readPkg(src) {
+  try {
+    return require(path.join(src, 'package.json'));
+  } catch (e) {
+    return null;
+  }
 }
 
 /**
@@ -109,8 +118,13 @@ function bundleScripts(opts, cb) {
     return createPath(filePath);
   }
 
+  var localPkg = readPkg(cwd);
+
   var pattern = opts.src +
     '{/*/**/bundle,/**/*.bundle,/_bundle}.{js,jsx,es6,babel}';
+  if (localPkg && localPkg.main) {
+    pattern = '{' + localPkg.main + ',' + pattern + '}';
+  }
   glob(pattern, { ignore: opts.ignore }, function(err, files) {
     files.forEach(function(file) {
       var bundleName = getBundleName(file);

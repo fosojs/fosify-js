@@ -1,7 +1,7 @@
 {
   "name": "example",
   "version": "1.0.0",
-  "main": "fosify.js",
+  "main": "./index.js",
   "dependencies": {
     "foso": "*"
   }
