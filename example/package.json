@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "main": "./index.js",
   "dependencies": {
+    "babel-polyfill": "^6.2.0",
+    "babel-preset-es2015": "^6.1.18",
     "foso": "^1.0.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   }
 }
