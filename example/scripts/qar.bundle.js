@@ -1,1 +1,1 @@
-require('babelify/polyfill');
+require('babel-polyfill');

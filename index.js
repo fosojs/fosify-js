@@ -81,8 +81,6 @@ function readPkg(src) {
  *   inline to the end of the bundle.
  * @param {String} [opts.env] - The environment to which the scripts are
  *   bundled.
- * @param {String} [opts.esnext=false] - Indicates whether all scripts are
- *   written using the latest version of EcmaScript.
  * @param {String} [opts.dest=./dist] - The destination path for the bundled
  *   resources.
  * @param {(Object|Boolean)} [opts.livereload] - Indicates whether to set up a
@@ -144,9 +142,7 @@ module.exports = function(plugin, opts, next) {
 
         var ify = _.flow(browserify, opts.watch ? watchify : _.identity);
         var bundler = ify(browserifyOpts)
-          .transform(babelify.configure({
-            extensions: opts.esnext ? allExtensions : es6Extensions
-          }));
+          .transform(babelify.configure());
 
         if (opts.minify) {
           bundler.plugin(collapse);

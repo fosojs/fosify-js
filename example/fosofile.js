@@ -12,8 +12,7 @@ foso
     secureHost: 'secure.example.com',
     baseURL: '/en-us',
     watch: true,
-    minify: false,
-    esnext: true
+    minify: false
   })
   .then(() => foso.bundle())
   .then(() => console.log('bundled'));
