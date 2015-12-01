@@ -79,8 +79,6 @@ function readPkg(src) {
  *   be minified during bundling.
  * @param {Boolean} [opts.debug=!opts.minify] - When is true, add a source map
  *   inline to the end of the bundle.
- * @param {String} [opts.env] - The environment to which the scripts are
- *   bundled.
  * @param {String} [opts.dest=./dist] - The destination path for the bundled
  *   resources.
  * @param {(Object|Boolean)} [opts.livereload] - Indicates whether to set up a
@@ -135,14 +133,8 @@ module.exports = function(plugin, opts, next) {
           standalone: opts.standalone
         });
 
-        var redirOpts = {};
-        if (opts.env) {
-          redirOpts.suffix = '.' + opts.env;
-        }
-
         var ify = _.flow(browserify, opts.watch ? watchify : _.identity);
-        var bundler = ify(browserifyOpts)
-          .transform(babelify.configure());
+        var bundler = ify(browserifyOpts).transform(babelify.configure());
 
         if (opts.minify) {
           bundler.plugin(collapse);
