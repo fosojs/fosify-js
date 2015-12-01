@@ -8,14 +8,9 @@ var _ = require('lodash');
 var glob = require('glob');
 var watchify = require('watchify');
 var browserify = require('browserify');
-var lessify = require('node-lessify');
-var stringify = require('stringify');
-var jadeify = require('jadeify');
 var babelify = require('babelify');
-var reactify = require('reactify');
 var path = require('path');
 var gulpif = require('gulp-if');
-var redirectify = require('redirectify');
 var header = require('gulp-header');
 var futil = require('fosify');
 var collapse = require('bundle-collapser/plugin');
@@ -138,7 +133,8 @@ module.exports = function(plugin, opts, next) {
           paths: [path.join(__dirname, './node_modules')],
           fullPaths: false,
           insertGlobalVars: insertGlobalVars.create(opts),
-          debug: _.isUndefined(opts.debug) ? !opts.minify : opts.debug
+          debug: _.isUndefined(opts.debug) ? !opts.minify : opts.debug,
+          standalone: opts.standalone
         });
 
         var redirOpts = {};
@@ -148,20 +144,9 @@ module.exports = function(plugin, opts, next) {
 
         var ify = _.flow(browserify, opts.watch ? watchify : _.identity);
         var bundler = ify(browserifyOpts)
-          .transform(lessify)
-          .transform(jadeify, { pretty: false })
           .transform(babelify.configure({
             extensions: opts.esnext ? allExtensions : es6Extensions
-          }))
-          .transform(stringify({
-            extensions: ['.html', '.txt'],
-            minify: true,
-            minifier: {
-              extensions: ['.html']
-            }
-          }))
-          .transform(redirectify, redirOpts)
-          .transform(reactify);
+          }));
 
         if (opts.minify) {
           bundler.plugin(collapse);
