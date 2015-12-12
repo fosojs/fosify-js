@@ -30,14 +30,16 @@ function getHeaderCode(livereload) {
   }
 
   var port = livereload.port || '2769';
+  var isSecure = !!livereload.key;
+  var protocol = isSecure ? 'https:' : 'http:';
 
   return code + '(function(d, s, id) {' +
     'var js, fjs = d.getElementsByTagName(s)[0];' +
     'if (d.getElementById(id)) return;' +
     'js = d.createElement(s); js.id = id;' +
-    'js.src = "https://localhost:' + port + '/livereload.js";' +
+    'js.src = "' + protocol + '//localhost:' + port + '/livereload.js";' +
     'fjs.parentNode.insertBefore(js, fjs);' +
-    '})(document, \'script\', \'livereload\');';
+    '})(document, \'script\', \'foso-livereload\');';
 }
 
 function bundle(bundleName, bundler, opts) {
