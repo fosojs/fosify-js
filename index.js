@@ -5,6 +5,7 @@ var buffer = require('vinyl-buffer');
 var vfs = require('vinyl-fs');
 var uglify = require('gulp-uglify');
 var _ = require('lodash');
+var R = require('ramda');
 var glob = require('glob');
 var watchify = require('watchify');
 var browserify = require('browserify');
@@ -16,6 +17,8 @@ var futil = require('fosify');
 var collapse = require('bundle-collapser/plugin');
 var pkg = require('./package.json');
 var insertGlobalVars = require('./lib/insert-global-vars');
+var requireDir = require('require-dir');
+var presets = requireDir('./presets');
 var cwd = path.resolve(process.cwd());
 
 var es6Extensions = ['.babel', '.es6'];
@@ -98,6 +101,7 @@ module.exports = function(plugin, opts, next) {
   futil.notifyUpdate(pkg);
 
   opts = opts || {};
+  opts = R.merge(opts, presets[opts.preset] || {});
 
   var rootIndexRegex = new RegExp(opts.src + '/_bundle\.(js|es6|babel)');
   var createPath = futil.bundleNamer({

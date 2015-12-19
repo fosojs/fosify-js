@@ -36,6 +36,8 @@
     "gulp-if": "^1.2.5",
     "gulp-uglify": "^1.2.0",
     "lodash": "^3.9.3",
+    "ramda": "^0.18.0",
+    "require-dir": "^0.3.0",
     "utc-now": "^0.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-fs": "^1.0.0",

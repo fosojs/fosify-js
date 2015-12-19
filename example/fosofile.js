@@ -7,12 +7,11 @@ var foso = new Foso();
 foso
   .register(js, {
     src: './scripts',
-    dest: './build',
+    dest: './dist',
     host: 'example.com',
     secureHost: 'secure.example.com',
     baseURL: '/en-us',
-    watch: true,
-    minify: false
+    preset: 'develop'
   })
   .then(() => foso.bundle())
   .then(() => console.log('bundled'));
