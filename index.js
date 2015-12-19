@@ -18,7 +18,6 @@ var pkg = require('./package.json');
 var insertGlobalVars = require('./lib/insert-global-vars');
 var requireDir = require('require-dir');
 var presets = requireDir('./presets');
-var cwd = path.resolve(process.cwd());
 
 var es6Extensions = ['.babel', '.es6'];
 var standardExtensions = ['.jsx', '.js', '.json'];
@@ -114,12 +113,13 @@ module.exports = function(plugin, opts, next) {
     return createPath(filePath);
   }
 
-  var localPkg = readPkg(cwd);
+  var localPkg = readPkg(opts.basePath);
 
   var pattern = opts.src +
     '{/*/**/bundle,/**/*.bundle,/_bundle}.{js,jsx,es6,babel}';
   if (localPkg && localPkg.main) {
-    pattern = '{' + localPkg.main + ',' + pattern + '}';
+    let fullMainPath = path.resolve(opts.basePath, localPkg.main);
+    pattern = '{' + fullMainPath + ',' + pattern + '}';
   }
 
   plugin.expose('bundle', function(cb) {
