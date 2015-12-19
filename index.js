@@ -4,7 +4,6 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var vfs = require('vinyl-fs');
 var uglify = require('gulp-uglify');
-var _ = require('lodash');
 var R = require('ramda');
 var glob = require('glob');
 var watchify = require('watchify');
@@ -129,17 +128,17 @@ module.exports = function(plugin, opts, next) {
       files.forEach(function(file) {
         var bundleName = getBundleName(file);
 
-        var browserifyOpts = _.extend(opts.watch ? watchify.args : {}, {
+        var browserifyOpts = R.merge(opts.watch ? watchify.args : {}, {
           entries: [file],
           extensions: allExtensions,
           paths: [path.join(__dirname, './node_modules')],
           fullPaths: false,
           insertGlobalVars: insertGlobalVars.create(opts),
-          debug: _.isUndefined(opts.debug) ? !opts.minify : opts.debug,
+          debug: typeof opts.debug === 'undefined' ? !opts.minify : opts.debug,
           standalone: opts.standalone
         });
 
-        var ify = _.flow(browserify, opts.watch ? watchify : _.identity);
+        var ify = R.compose(opts.watch ? watchify : R.identity, browserify);
         var bundler = ify(browserifyOpts).transform(babelify.configure());
 
         if (opts.minify) {
