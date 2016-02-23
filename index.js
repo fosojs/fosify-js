@@ -27,8 +27,10 @@ var es6Extensions = ['.babel', '.es6'];
 var standardExtensions = ['.jsx', '.js', '.json'];
 var allExtensions = standardExtensions.concat(es6Extensions);
 
-function getHeaderCode(livereload) {
-  var code = '/*! Was bundled at ' + new Date() + ' */\n';
+function getHeaderCode(opts) {
+  opts = opts || {};
+  var livereload = opts.livereload;
+  var code = opts.header || '/*! Was bundled at ' + new Date() + ' */\n';
 
   if (!livereload) {
     return code;
@@ -61,7 +63,7 @@ function bundle(bundleName, bundler, opts) {
     .pipe(source(bundleName))
     .pipe(buffer())
     .pipe(gulpif(opts.minify, uglify()))
-    .pipe(header(getHeaderCode(opts.livereload)))
+    .pipe(header(getHeaderCode(opts)))
     .pipe(vfs.dest(opts.dest));
 }
 
@@ -168,7 +170,8 @@ function bundleScripts(opts, cb) {
         bundle(bundleName, bundler, {
           minify: opts.minify,
           dest: opts.dest,
-          livereload: opts.livereload
+          livereload: opts.livereload,
+          header: opts.header,
         });
         futil.log.bundled(bundleName);
       }
