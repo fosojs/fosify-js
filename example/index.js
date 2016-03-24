@@ -1,1 +1,1 @@
-'index.js content';
+'index.js content' + __foo;

@@ -12,7 +12,10 @@ foso
     baseURL: '/en-us',
     watch: true,
     minify: false,
-    esnext: true
+    esnext: true,
+    globalVars: {
+      __foo: () => JSON.stringify('foo'),
+    }
   })
   .fosify(js)
   .now(function() {
