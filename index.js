@@ -59,6 +59,9 @@ function bundle(bundleName, bundler, opts) {
     .on('error', function(err) {
       console.log('Error during bundling');
       console.error(err);
+      if (!opts.watch) {
+        process.exit(1);
+      }
     })
     .pipe(source(bundleName))
     .pipe(buffer())
@@ -172,6 +175,7 @@ function bundleScripts(opts, cb) {
           dest: opts.dest,
           livereload: opts.livereload,
           header: opts.header,
+          watch: opts.watch,
         });
         futil.log.bundled(bundleName);
       }
