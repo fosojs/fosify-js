@@ -1,5 +1,7 @@
 # fosify-js
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/fosojs/fosify-js.svg)](https://greenkeeper.io/)
+
 A JavaScript bundling plugin for foso.
 
 [![Dependency Status](https://david-dm.org/fosojs/fosify-js/status.svg?style=flat)](https://david-dm.org/fosojs/fosify-js)
