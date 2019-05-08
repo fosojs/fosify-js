@@ -59,6 +59,10 @@ function bundle(bundleName, bundler, opts) {
     .pipe(source(bundleName))
     .pipe(buffer())
     .pipe(gulpif(opts.minify, uglify()))
+    .on('error', err => {
+      console.error(err);
+      process.exit(1);
+    })
     .pipe(header(getHeaderCode(opts.livereload)))
     .pipe(vfs.dest(opts.dest));
 }
